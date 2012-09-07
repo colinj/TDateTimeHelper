@@ -355,9 +355,9 @@ end;
 function TDateTimeHelper.ToString(const aFormatStr: string): string;
 begin
   if aFormatStr = '' then
-    aFormatStr := FormatSettings.ShortDateFormat;
-
-  Result := FormatDateTime(aFormatStr, Self);
+    Result := DateToStr(Self)
+  else
+    Result := FormatDateTime(aFormatStr, Self);
 end;
 
 function TDateTimeHelper.WeeksBetween(const aDateTime: TDateTime): Integer;
