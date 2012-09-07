@@ -49,6 +49,10 @@ type
     class function GetTomorrow: TDateTime; static;
     class function GetYesterDay: TDateTime; static;
   public
+    class function Create(const aYear, aMonth, aDay: Word): TDateTime; overload; static;
+    class function Create(const aYear, aMonth, aDay, aHour, aMinute, aSecond,
+      aMillisecond: Word): TDateTime; overload; static;
+
     class property Now: TDateTime read GetNow;
     class property Today: TDateTime read GetToday;
     class property Yesterday: TDateTime read GetYesterDay;
@@ -134,6 +138,18 @@ end;
 function TDateTimeHelper.CompareTo(const aDateTime: TDateTime): TValueRelationship;
 begin
   Result := CompareDateTime(Self, aDateTime);
+end;
+
+class function TDateTimeHelper.Create(const aYear, aMonth,
+  aDay: Word): TDateTime;
+begin
+  Result := EncodeDate(aYear, aMonth, aDay);
+end;
+
+class function TDateTimeHelper.Create(const aYear, aMonth, aDay, aHour, aMinute,
+  aSecond, aMillisecond: Word): TDateTime;
+begin
+  Result := EncodeDateTime(aYear, aMonth, aDay, aHour, aMinute, aSecond, aMillisecond);
 end;
 
 function TDateTimeHelper.EndOfDay: TDateTime;
