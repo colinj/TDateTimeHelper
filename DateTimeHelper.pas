@@ -91,6 +91,11 @@ type
 
     function CompareTo(const aDateTime: TDateTime): TValueRelationship;
     function InRange(const aStartDateTime, aEndDateTime: TDateTime; const aInclusive: Boolean = True): Boolean;
+    function IsInLeapYear: Boolean;
+    function IsToday: Boolean;
+    function IsSameDay(const aDateTime: TDateTime): Boolean;
+    function IsAM: Boolean;
+    function IsPM: Boolean;
   end;
 
 implementation
@@ -250,6 +255,31 @@ end;
 function TDateTimeHelper.InRange(const aStartDateTime, aEndDateTime: TDateTime; const aInclusive: Boolean): Boolean;
 begin
   Result := DateTimeInRange(Self, aStartDateTime, aEndDateTime, aInclusive);
+end;
+
+function TDateTimeHelper.IsAM: Boolean;
+begin
+  Result := System.DateUtils.IsAM(Self);
+end;
+
+function TDateTimeHelper.IsInLeapYear: Boolean;
+begin
+  Result := IsInLeapYear(Self);
+end;
+
+function TDateTimeHelper.IsPM: Boolean;
+begin
+  Result := System.DateUtils.IsPM(Self);
+end;
+
+function TDateTimeHelper.IsSameDay(const aDateTime: TDateTime): Boolean;
+begin
+  Result := System.DateUtils.IsSameDay(Self);
+end;
+
+function TDateTimeHelper.IsToday: Boolean;
+begin
+  Result := System.DateUtils.IsToday(Self);
 end;
 
 function TDateTimeHelper.StartOfDay: TDateTime;
