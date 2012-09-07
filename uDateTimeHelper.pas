@@ -13,7 +13,7 @@ type
     function GetDayOfWeek: Word;
     function GetDayOfYear: Word;
     function GetHour: Word;
-    function GetMillisecond: Integer;
+    function GetMillisecond: Word;
     function GetMinute: Word;
     function GetMonth: Word;
     class function GetNow: TDateTime; static;
@@ -24,17 +24,44 @@ type
   public
     class property Now: TDateTime read GetNow;
     class property Today: TDateTime read GetToday;
+
     property Date: TDateTime read GetDate;
     property Time: TDateTime read GetTime;
+
     property DayOfWeek: Word read GetDayOfWeek;
     property DayOfYear: Word read GetDayOfYear;
+
+    // Pick-a-field
     property Year: Integer read GetYear;
     property Month: Word read GetMonth;
     property Day: Word read GetDay;
     property Hour: Word read GetHour;
     property Minute: Word read GetMinute;
     property Second: Word read GetSecond;
-    property Millisecond: Integer read GetMillisecond;
+    property Millisecond: Word read GetMillisecond;
+
+    // Start/End functions
+    function StartOfYear: TDateTime;
+    function EndOfYear: TDateTime;
+    function StartOfMonth: TDateTime;
+    function EndOfMonth: TDateTime;
+    function StartOfTheWeek: TDateTime;
+    function EndOfTheWeek: TDateTime;
+    function StartOfDay: TDateTime;
+    function EndOfDay: TDateTime;
+
+    // Increment/decrement datetimes
+    function AddYears(const aNumberOfYears: Integer): TDateTime;
+    function AddMonths(const aNumberOfMonths: Integer): TDateTime;
+    function AddDays(const aNumberOfDays: Integer): TDateTime;
+    function AddHours(const aNumberOfHours: Int64): TDateTime;
+    function AddMinutes(const aNumberOfMinutes: Int64): TDateTime;
+    function AddSeconds(const aNumberOfSeconds: Int64): TDateTime;
+    function AddMilliseconds(const aNumberOfMilliseconds: Int64): TDateTime;
+
+    // Datetime comparisons
+    function CompareTo(const aDateTime: TDateTime): Integer;
+    
   end;
 
 implementation
@@ -69,7 +96,7 @@ begin
   Result := HourOf(Self);
 end;
 
-function TDateTimeHelper.GetMillisecond: Integer;
+function TDateTimeHelper.GetMillisecond: Word;
 begin
   Result := MilliSecondOf(Self);
 end;
