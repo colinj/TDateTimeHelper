@@ -96,6 +96,15 @@ type
     function IsSameDay(const aDateTime: TDateTime): Boolean;
     function IsAM: Boolean;
     function IsPM: Boolean;
+
+    function YearsBetween(const aDateTime: TDateTime): Integer;
+    function MonthsBetween(const aDateTime: TDateTime): Integer;
+    function WeeksBetween(const aDateTime: TDateTime): Integer;
+    function DaysBetween(const aDateTime: TDateTime): Integer;
+    function HoursBetween(const aDateTime: TDateTime): Int64;
+    function MinutesBetween(const aDateTime: TDateTime): Int64;
+    function SecondsBetween(const aDateTime: TDateTime): Int64;
+    function MilliSecondsBetween(const aDateTime: TDateTime): Int64;
   end;
 
 implementation
@@ -155,6 +164,11 @@ class function TDateTimeHelper.Create(const aYear, aMonth, aDay, aHour, aMinute,
   aSecond, aMillisecond: Word): TDateTime;
 begin
   Result := EncodeDateTime(aYear, aMonth, aDay, aHour, aMinute, aSecond, aMillisecond);
+end;
+
+function TDateTimeHelper.DaysBetween(const aDateTime: TDateTime): Integer;
+begin
+  Result := System.DateUtils.DaysBetween(Self, aDateTime);
 end;
 
 function TDateTimeHelper.EndOfDay: TDateTime;
@@ -252,6 +266,11 @@ begin
   Result := System.SysUtils.Date - 1;
 end;
 
+function TDateTimeHelper.HoursBetween(const aDateTime: TDateTime): Int64;
+begin
+  Result := System.DateUtils.HoursBetween(Self, aDateTime);
+end;
+
 function TDateTimeHelper.InRange(const aStartDateTime, aEndDateTime: TDateTime; const aInclusive: Boolean): Boolean;
 begin
   Result := DateTimeInRange(Self, aStartDateTime, aEndDateTime, aInclusive);
@@ -282,6 +301,26 @@ begin
   Result := System.DateUtils.IsToday(Self);
 end;
 
+function TDateTimeHelper.MilliSecondsBetween(const aDateTime: TDateTime): Int64;
+begin
+  Result := System.DateUtils.MilliSecondsBetween(Self, aDateTime);
+end;
+
+function TDateTimeHelper.MinutesBetween(const aDateTime: TDateTime): Int64;
+begin
+  Result := System.DateUtils.MinutesBetween(Self, aDateTime);
+end;
+
+function TDateTimeHelper.MonthsBetween(const aDateTime: TDateTime): Integer;
+begin
+  Result := System.DateUtils.MonthsBetween(Self, aDateTime);
+end;
+
+function TDateTimeHelper.SecondsBetween(const aDateTime: TDateTime): Int64;
+begin
+  Result := System.DateUtils.SecondsBetween(Self, aDateTime);
+end;
+
 function TDateTimeHelper.StartOfDay: TDateTime;
 begin
   Result := StartOfTheDay(Self);
@@ -300,6 +339,16 @@ end;
 function TDateTimeHelper.StartOfYear: TDateTime;
 begin
   Result := StartOfTheYear(Self);
+end;
+
+function TDateTimeHelper.WeeksBetween(const aDateTime: TDateTime): Integer;
+begin
+  Result := System.DateUtils.WeeksBetween(Self, aDateTime);
+end;
+
+function TDateTimeHelper.YearsBetween(const aDateTime: TDateTime): Integer;
+begin
+  Result := System.DateUtils.YearsBetween(Self, aDateTime);
 end;
 
 end.
