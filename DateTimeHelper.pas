@@ -92,10 +92,11 @@ type
     function AddMilliseconds(const aNumberOfMilliseconds: Int64 = 1): TDateTime;
 
     function CompareTo(const aDateTime: TDateTime): TValueRelationship;
+    function Equals(const aDateTime: TDateTime): Boolean;
+    function IsSameDay(const aDateTime: TDateTime): Boolean;
     function InRange(const aStartDateTime, aEndDateTime: TDateTime; const aInclusive: Boolean = True): Boolean;
     function IsInLeapYear: Boolean;
     function IsToday: Boolean;
-    function IsSameDay(const aDateTime: TDateTime): Boolean;
     function IsAM: Boolean;
     function IsPM: Boolean;
 
@@ -200,6 +201,11 @@ end;
 function TDateTimeHelper.EndOfYear: TDateTime;
 begin
   Result := EndOfTheYear(Self);
+end;
+
+function TDateTimeHelper.Equals(const aDateTime: TDateTime): Boolean;
+begin
+  Result := SameDateTime(Self, aDateTime);
 end;
 
 function TDateTimeHelper.GetDate: TDateTime;
