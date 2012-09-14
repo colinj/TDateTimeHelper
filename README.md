@@ -4,7 +4,7 @@ A TDateTime helper record for Delphi XE3.
 
 One of the updated language features for XE3 are record helpers for simple types.
 
-To learn a little bit more, I decided to make a record helper for the TDateTime type. It's a very simple record helper which pretty much calls the existing date time functions that are in the DateUtils unit. One benefit is that it allows you assign and manipulate datetime values very easily.
+To learn a little bit more, I decided to make a record helper for the TDateTime type. It's a very simple record helper which pretty much calls the existing date time functions that are in the DateUtils unit. One benefit is that it allows you to assign and manipulate datetime values very easily.
 
 **Example**
 
