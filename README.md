@@ -49,4 +49,4 @@ Need to add unit tests!
 
 Contribute
 ----------
-I'm open to any new ideas to make this helper record be more consistent in every day use. Please clone the repo and send your pull requests if you would like to add some unit tests, new methods, andy other ideas that would make the TDateTimeHelper an indispensible utility.
+I'm open to any new ideas to make this helper record be more consistent in every day use. Please clone the repo and send your pull requests if you would like to add some unit tests, new methods, and any other ideas that would make TDateTimeHelper indispensible.
