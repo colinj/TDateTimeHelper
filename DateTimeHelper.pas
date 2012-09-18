@@ -28,30 +28,30 @@ unit DateTimeHelper;
 interface
 
 uses
-  System.SysUtils, System.Types;
+  System.SysUtils, System.Types, System.DateUtils;
 
 type
   TDateTimeHelper = record helper for TDateTime
   private
-    function GetDay: Word;
-    function GetDate: TDateTime;
-    function GetDayOfWeek: Word;
-    function GetDayOfYear: Word;
-    function GetHour: Word;
-    function GetMillisecond: Word;
-    function GetMinute: Word;
-    function GetMonth: Word;
-    function GetSecond: Word;
-    function GetTime: TDateTime;
-    function GetYear: Integer;
-    class function GetNow: TDateTime; static;
-    class function GetToday: TDateTime; static;
-    class function GetTomorrow: TDateTime; static;
-    class function GetYesterDay: TDateTime; static;
+    function GetDay: Word; inline;
+    function GetDate: TDateTime; inline;
+    function GetDayOfWeek: Word; inline;
+    function GetDayOfYear: Word; inline;
+    function GetHour: Word; inline;
+    function GetMillisecond: Word; inline;
+    function GetMinute: Word; inline;
+    function GetMonth: Word; inline;
+    function GetSecond: Word; inline;
+    function GetTime: TDateTime; inline;
+    function GetYear: Integer; inline;
+    class function GetNow: TDateTime; static; inline;
+    class function GetToday: TDateTime; static; inline;
+    class function GetTomorrow: TDateTime; static; inline;
+    class function GetYesterDay: TDateTime; static; inline;
   public
-    class function Create(const aYear, aMonth, aDay: Word): TDateTime; overload; static;
+    class function Create(const aYear, aMonth, aDay: Word): TDateTime; overload; static; inline;
     class function Create(const aYear, aMonth, aDay, aHour, aMinute, aSecond,
-      aMillisecond: Word): TDateTime; overload; static;
+      aMillisecond: Word): TDateTime; overload; static; inline;
 
     class property Now: TDateTime read GetNow;
     class property Today: TDateTime read GetToday;
@@ -72,57 +72,54 @@ type
     property Second: Word read GetSecond;
     property Millisecond: Word read GetMillisecond;
 
-    function ToString(const aFormatStr: string = ''): string;
+    function ToString(const aFormatStr: string = ''): string; inline;
 
-    function StartOfYear: TDateTime;
-    function EndOfYear: TDateTime;
-    function StartOfMonth: TDateTime;
-    function EndOfMonth: TDateTime;
-    function StartOfWeek: TDateTime;
-    function EndOfWeek: TDateTime;
-    function StartOfDay: TDateTime;
-    function EndOfDay: TDateTime;
+    function StartOfYear: TDateTime; inline;
+    function EndOfYear: TDateTime; inline;
+    function StartOfMonth: TDateTime; inline;
+    function EndOfMonth: TDateTime; inline;
+    function StartOfWeek: TDateTime; inline;
+    function EndOfWeek: TDateTime; inline;
+    function StartOfDay: TDateTime; inline;
+    function EndOfDay: TDateTime; inline;
 
-    function AddYears(const aNumberOfYears: Integer = 1): TDateTime;
-    function AddMonths(const aNumberOfMonths: Integer = 1): TDateTime;
-    function AddDays(const aNumberOfDays: Integer = 1): TDateTime;
-    function AddHours(const aNumberOfHours: Int64 = 1): TDateTime;
-    function AddMinutes(const aNumberOfMinutes: Int64 = 1): TDateTime;
-    function AddSeconds(const aNumberOfSeconds: Int64 = 1): TDateTime;
-    function AddMilliseconds(const aNumberOfMilliseconds: Int64 = 1): TDateTime;
+    function AddYears(const aNumberOfYears: Integer = 1): TDateTime; inline;
+    function AddMonths(const aNumberOfMonths: Integer = 1): TDateTime; inline;
+    function AddDays(const aNumberOfDays: Integer = 1): TDateTime; inline;
+    function AddHours(const aNumberOfHours: Int64 = 1): TDateTime; inline;
+    function AddMinutes(const aNumberOfMinutes: Int64 = 1): TDateTime; inline;
+    function AddSeconds(const aNumberOfSeconds: Int64 = 1): TDateTime; inline;
+    function AddMilliseconds(const aNumberOfMilliseconds: Int64 = 1): TDateTime; inline;
 
-    function CompareTo(const aDateTime: TDateTime): TValueRelationship;
-    function Equals(const aDateTime: TDateTime): Boolean;
-    function IsSameDay(const aDateTime: TDateTime): Boolean;
-    function InRange(const aStartDateTime, aEndDateTime: TDateTime; const aInclusive: Boolean = True): Boolean;
-    function IsInLeapYear: Boolean;
-    function IsToday: Boolean;
-    function IsAM: Boolean;
-    function IsPM: Boolean;
+    function CompareTo(const aDateTime: TDateTime): TValueRelationship; inline;
+    function Equals(const aDateTime: TDateTime): Boolean; inline;
+    function IsSameDay(const aDateTime: TDateTime): Boolean; inline;
+    function InRange(const aStartDateTime, aEndDateTime: TDateTime; const aInclusive: Boolean = True): Boolean; inline;
+    function IsInLeapYear: Boolean; inline;
+    function IsToday: Boolean; inline;
+    function IsAM: Boolean; inline;
+    function IsPM: Boolean; inline;
 
-    function YearsBetween(const aDateTime: TDateTime): Integer;
-    function MonthsBetween(const aDateTime: TDateTime): Integer;
-    function WeeksBetween(const aDateTime: TDateTime): Integer;
-    function DaysBetween(const aDateTime: TDateTime): Integer;
-    function HoursBetween(const aDateTime: TDateTime): Int64;
-    function MinutesBetween(const aDateTime: TDateTime): Int64;
-    function SecondsBetween(const aDateTime: TDateTime): Int64;
-    function MilliSecondsBetween(const aDateTime: TDateTime): Int64;
+    function YearsBetween(const aDateTime: TDateTime): Integer; inline;
+    function MonthsBetween(const aDateTime: TDateTime): Integer; inline;
+    function WeeksBetween(const aDateTime: TDateTime): Integer; inline;
+    function DaysBetween(const aDateTime: TDateTime): Integer; inline;
+    function HoursBetween(const aDateTime: TDateTime): Int64; inline;
+    function MinutesBetween(const aDateTime: TDateTime): Int64; inline;
+    function SecondsBetween(const aDateTime: TDateTime): Int64; inline;
+    function MilliSecondsBetween(const aDateTime: TDateTime): Int64; inline;
 
-    function WithinYears(const aDateTime: TDateTime; const aYears: Integer): Boolean;
-    function WithinMonths(const aDateTime: TDateTime; const aMonths: Integer): Boolean;
-    function WithinWeeks(const aDateTime: TDateTime; const aWeeks: Integer): Boolean;
-    function WithinDays(const aDateTime: TDateTime; const aDays: Integer): Boolean;
-    function WithinHours(const aDateTime: TDateTime; const aHours: Int64): Boolean;
-    function WithinMinutes(const aDateTime: TDateTime; const aMinutes: Int64): Boolean;
-    function WithinSeconds(const aDateTime: TDateTime; const aSeconds: Int64): Boolean;
-    function WithinMilliseconds(const aDateTime: TDateTime; const AMilliseconds: Int64): Boolean;
+    function WithinYears(const aDateTime: TDateTime; const aYears: Integer): Boolean; inline;
+    function WithinMonths(const aDateTime: TDateTime; const aMonths: Integer): Boolean; inline;
+    function WithinWeeks(const aDateTime: TDateTime; const aWeeks: Integer): Boolean; inline;
+    function WithinDays(const aDateTime: TDateTime; const aDays: Integer): Boolean; inline;
+    function WithinHours(const aDateTime: TDateTime; const aHours: Int64): Boolean; inline;
+    function WithinMinutes(const aDateTime: TDateTime; const aMinutes: Int64): Boolean; inline;
+    function WithinSeconds(const aDateTime: TDateTime; const aSeconds: Int64): Boolean; inline;
+    function WithinMilliseconds(const aDateTime: TDateTime; const AMilliseconds: Int64): Boolean; inline;
   end;
 
 implementation
-
-uses
-  System.DateUtils;
 
 { TDateTimeHelper }
 
