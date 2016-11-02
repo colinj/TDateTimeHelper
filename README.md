@@ -1,8 +1,8 @@
 # TDateTimeHelper
 
-A TDateTime helper record for Delphi XE3.
+A TDateTime helper record for Delphi XE3 and above.
 
-One of the updated language features for XE3 are record helpers for simple types.
+One of the new language features for XE3 and above are record helpers for simple types.
 
 To learn a little bit more, I decided to make a record helper for the TDateTime type. It's a very simple record helper which pretty much calls the existing date time functions that are in the DateUtils unit. One benefit is that it allows you to assign and manipulate datetime values very easily.
 
@@ -10,9 +10,9 @@ Getting Started
 ---------------
 1. Download the DateTimeHelper unit.
 2. Add DateTimeHelper unit to your project.
-3. Add DateTimeHelper to the uses clause in the implementation section of your unit.
+3. Add DateTimeHelper to the `uses` clause in the `implementation` section of your unit.
 
-And that's it! You now should be able to see the additional methods on TDateTime types via CodeInsight in your Delphi XE3 IDE.
+And that's it! You now should be able to see the additional methods on TDateTime types via CodeInsight in your Delphi IDE.
 
 *Note:* The limitation of helper records is that only one helper is active/available per class type. If you have more than one helper for a class type then it is the last one defined in the uses clause that will be active. 
 
@@ -43,7 +43,7 @@ And that's it! You now should be able to see the additional methods on TDateTime
       WriteLn('Delphi''s birthday was ' + T1.ToString('dd/mm/yyyy'));
     end;
 
-An important rule that I have applied in creating this record helper is that TDateTime is a value type and therefore is immutable. This means all helper methods will create and return a new value and not change the current value of the calling TDateTime variable (unless explicitly assigned).
+An important rule that I have applied in creating this record helper is that TDateTime is a value type and therefore is **immutable**. This means all helper methods will create and **return a new value** and **not change the current value** of the calling TDateTime variable (unless explicitly assigned).
 
 **Example**
 
