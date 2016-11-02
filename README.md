@@ -47,7 +47,7 @@ An important rule that I have applied in creating this record helper is that TDa
 
 **Example**
 ```delphi
-T1 := TDateTime(2016, 09, 14);
+T1 := TDateTime.Create(2016, 09, 14);
 
 WriteLn(T1.AddYears(2).ToString); // will return 14/09/2018
 WriteLn(T1.ToString);             // T1 is unchanged and will still be 14/09/2016.
