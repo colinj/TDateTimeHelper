@@ -81,8 +81,8 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
+			<DCCReference Include="..\DateTimeHelper.pas"/>
 			<DCCReference Include="TDateTimeHelper.Tests.pas"/>
-			<DCCReference Include="..\Source\DateTimeHelper.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

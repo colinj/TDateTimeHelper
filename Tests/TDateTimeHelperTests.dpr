@@ -8,8 +8,8 @@ uses
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
   DUnitX.TestFramework,
-  TDateTimeHelper.Tests in 'TDateTimeHelper.Tests.pas',
-  DateTimeHelper in '..\Source\DateTimeHelper.pas';
+  DateTimeHelper in '..\DateTimeHelper.pas',
+  TDateTimeHelper.Tests in 'TDateTimeHelper.Tests.pas';
 
 var
   runner : ITestRunner;
