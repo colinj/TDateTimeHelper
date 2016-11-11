@@ -8,38 +8,41 @@ uses
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
   DUnitX.TestFramework,
+{$IFDEF VER240}
+  DUnitX.Init, // Workaround for Delphi XE3 Compiler Bug
+{$ENDIF}
   DateTimeHelper in '..\DateTimeHelper.pas',
   TDateTimeHelper.Tests in 'TDateTimeHelper.Tests.pas';
 
 var
-  runner : ITestRunner;
-  results : IRunResults;
-  logger : ITestLogger;
-  nunitLogger : ITestLogger;
+  Runner: ITestRunner;
+  Results: IRunResults;
+  Logger: ITestLogger;
+  NUnitLogger: ITestLogger;
 begin
 {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX.RunRegisteredTests;
-  exit;
+  Exit;
 {$ENDIF}
   try
     //Check command line options, will exit if invalid
     TDUnitX.CheckCommandLine;
     //Create the test runner
-    runner := TDUnitX.CreateRunner;
+    Runner := TDUnitX.CreateRunner;
     //Tell the runner to use RTTI to find Fixtures
-    runner.UseRTTI := True;
+    Runner.UseRTTI := True;
     //tell the runner how we will log things
     //Log to the console window
-    logger := TDUnitXConsoleLogger.Create(true);
-    runner.AddLogger(logger);
+    Logger := TDUnitXConsoleLogger.Create(True);
+    Runner.AddLogger(Logger);
     //Generate an NUnit compatible XML File
-    nunitLogger := TDUnitXXMLNUnitFileLogger.Create(TDUnitX.Options.XMLOutputFile);
-    runner.AddLogger(nunitLogger);
-    runner.FailsOnNoAsserts := False; //When true, Assertions must be made during tests;
+    NUnitLogger := TDUnitXXMLNUnitFileLogger.Create(TDUnitX.Options.XMLOutputFile);
+    Runner.AddLogger(NUnitLogger);
+    Runner.FailsOnNoAsserts := False; //When true, Assertions must be made during tests;
 
     //Run tests
-    results := runner.Execute;
-    if not results.AllPassed then
+    Results := Runner.Execute;
+    if not Results.AllPassed then
       System.ExitCode := EXIT_ERRORS;
 
     {$IFNDEF CI}
