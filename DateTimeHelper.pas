@@ -43,7 +43,7 @@ type
     function GetMonth: Word; inline;
     function GetSecond: Word; inline;
     function GetTime: TDateTime; inline;
-    function GetYear: Integer; inline;
+    function GetYear: Word; inline;
     class function GetNow: TDateTime; static; inline;
     class function GetToday: TDateTime; static; inline;
     class function GetTomorrow: TDateTime; static; inline;
@@ -64,7 +64,7 @@ type
     property DayOfWeek: Word read GetDayOfWeek;
     property DayOfYear: Word read GetDayOfYear;
 
-    property Year: Integer read GetYear;
+    property Year: Word read GetYear;
     property Month: Word read GetMonth;
     property Day: Word read GetDay;
     property Hour: Word read GetHour;
@@ -270,7 +270,7 @@ begin
   Result := System.SysUtils.Date + 1;
 end;
 
-function TDateTimeHelper.GetYear: Integer;
+function TDateTimeHelper.GetYear: Word;
 begin
   Result := YearOf(Self);
 end;
