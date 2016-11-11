@@ -16,7 +16,7 @@ type
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils,
   DateTimeHelper;
 
 { TDateTimeHelperTestObject }
@@ -34,5 +34,7 @@ begin
 end;
 
 initialization
+
   TDUnitX.RegisterTestFixture(TDateTimeHelperTestObject);
+
 end.
