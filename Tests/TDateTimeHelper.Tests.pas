@@ -48,14 +48,20 @@ type
     procedure DateTime_StartOfDay;
     [Test]
     procedure DateTime_EndOfDay;
+    [Test]
+    procedure UnixTime_Get;
+    [Test]
+    procedure UnixTime_Set;
+    [Test]
+    procedure TotalSecouns_Get;
+    [Test]
+    procedure TotalSecouns_Set;
   end;
 
 implementation
 
 uses
-  System.SysUtils,
-  System.DateUtils,
-  DateTimeHelper;
+  System.SysUtils, System.DateUtils, DateTimeHelper;
 
 const
   YEAR_VAL = 1995;
@@ -70,8 +76,41 @@ const
 
 procedure TDateTimeHelperTestObject.Setup;
 begin
-  FActual := TDateTime.Create(YEAR_VAL, MONTH_VAL, DAY_VAL, HOUR_VAL, MIN_VAL, SEC_VAL, MSEC_VAL);
-  FExpected := EncodeDateTime(YEAR_VAL, MONTH_VAL, DAY_VAL, HOUR_VAL, MIN_VAL, SEC_VAL, MSEC_VAL);
+  FActual := TDateTime.Create(YEAR_VAL, MONTH_VAL, DAY_VAL, HOUR_VAL, MIN_VAL,
+    SEC_VAL, MSEC_VAL);
+  FExpected := EncodeDateTime(YEAR_VAL, MONTH_VAL, DAY_VAL, HOUR_VAL, MIN_VAL,
+    SEC_VAL, MSEC_VAL);
+end;
+
+procedure TDateTimeHelperTestObject.TotalSecouns_Get;
+begin
+  Assert.AreEqual(SecondsBetween(FExpected, 0), FActual.TotalSecounds);
+end;
+
+procedure TDateTimeHelperTestObject.TotalSecouns_Set;
+var
+  Available, Expected: TDateTime;
+begin
+// FExpected has millis acuracy and can not compare to Available (secounds acuracy)
+  Expected := StrToDate('01/01/2020');
+
+  Available.TotalSecounds := SecondsBetween(Expected, 0);
+  Assert.AreEqual(Expected, Available);
+end;
+
+procedure TDateTimeHelperTestObject.UnixTime_Get;
+begin
+  Assert.AreEqual(DateTimeToUnix(FExpected), FActual.UnixTime);
+end;
+
+procedure TDateTimeHelperTestObject.UnixTime_Set;
+var
+  UnixValue: Int64;
+  Available: TDateTime;
+begin
+  UnixValue := DateTimeToUnix(FExpected);
+  Available.UnixTime := UnixValue;
+  Assert.AreEqual(UnixToDateTime(UnixValue), Available);
 end;
 
 procedure TDateTimeHelperTestObject.DateTime_Create;
@@ -160,7 +199,7 @@ begin
 end;
 
 initialization
-
   TDUnitX.RegisterTestFixture(TDateTimeHelperTestObject);
 
 end.
+
