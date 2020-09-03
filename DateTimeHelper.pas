@@ -121,10 +121,19 @@ type
       Boolean; inline;
     function WithinMilliseconds(const aDateTime: TDateTime; const AMilliseconds:
       Int64): Boolean; inline;
+
+    // Parse a string as TDateTime, using a string format ex.('MM/dd/yyyy hh:mm:ss')
+    function Parse(Date: string; aFormat: string = ''; aDateSeparator: Char = #0;
+      aTimeSeparator: Char = #0):TDateTime; inline;
+
+   // Parse a string as TDateTime, using local string ex. ('en-US')
+    function ParseLocal(Date: string;local:string=''):TDateTime; inline;
+
     property UnixTime: Int64 read GetUnixTime write SetUnixTime;
 
     // Total Secounds until initial Date (12/30/1899 12:00 am)
     property TotalSecounds: Int64 read GetTotalSecounds write SetTotalSecounds;
+
   end;
 
 implementation
@@ -447,6 +456,60 @@ end;
 function TDateTimeHelper.YearsBetween(const aDateTime: TDateTime): Integer;
 begin
   Result := System.DateUtils.YearsBetween(Self, aDateTime);
+end;
+
+function TDateTimeHelper.Parse(Date: string; aFormat: string = ''; aDateSeparator: Char = #0;
+  aTimeSeparator: Char = #0):TDateTime;
+var
+  fs: TFormatSettings;
+  aFormats: TArray<string>;
+  aLength: Integer;
+begin
+  aFormats := aFormat.split([' ']);
+
+  aLength := Length(aFormats);
+
+  if aLength = 0 then
+  begin
+    self := StrToDateTime(Date);
+    result:= self;
+    exit;
+  end;
+
+  GetLocaleFormatSettings(SysLocale.DefaultLCID, fs);
+  with fs do
+  begin
+
+    if aDateSeparator <> #0 then
+      DateSeparator := aDateSeparator;
+
+    if not aFormats[0].Trim.IsEmpty then
+      ShortDateFormat := aFormats[0];
+
+    if aLength > 1 then
+    begin
+      if aTimeSeparator <> #0 then
+        TimeSeparator := aTimeSeparator;
+
+      if not aFormats[1].Trim.IsEmpty then
+        ShortTimeFormat := aFormats[1];
+    end;
+  end;
+  Self := StrToDateTime(Date, fs);
+    result:= self;
+end;
+
+function TDateTimeHelper.ParseLocal(Date: string; local: string = ''):TDateTime;
+var
+  fs: TFormatSettings;
+begin
+  if local.Trim.IsEmpty then
+    fs := TFormatSettings.Create(SysLocale.DefaultLCID)
+  else
+    fs := TFormatSettings.Create(local);
+
+  Self := StrToDateTime(Date, fs);
+  result:= self;
 end;
 
 end.

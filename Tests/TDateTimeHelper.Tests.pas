@@ -56,6 +56,14 @@ type
     procedure TotalSecouns_Get;
     [Test]
     procedure TotalSecouns_Set;
+    [Test]
+    procedure DateTime_Parse;
+    [Test]
+    procedure DateTime_Parse2;
+    [Test]
+    procedure DateTime_ParseLocal;
+    [Test]
+    procedure DateTime_ParseLocal2;
   end;
 
 implementation
@@ -197,6 +205,43 @@ procedure TDateTimeHelperTestObject.DateTime_EndOfDay;
 begin
   Assert.AreEqual(EndOfTheDay(FExpected), FActual.EndOfDay);
 end;
+
+procedure TDateTimeHelperTestObject.DateTime_Parse;
+var
+  d1,original: TDateTime;
+
+begin
+  original := UnixToDateTime(31363200); //12/30/1970
+
+  Assert.AreEqual(original, d1.Parse('1970-12-30', 'yyyy-MM-dd', '-'));
+end;
+
+procedure TDateTimeHelperTestObject.DateTime_Parse2;
+var
+  d1,original: TDateTime;
+
+begin
+  original := UnixToDateTime(31535999); //12/31/1970 23:59:59
+  Assert.AreEqual(original, d1.Parse('1970-12-31 23_59_59', 'yyyy-MM-dd hh_mm_ss', '-','_'));
+end;
+
+procedure TDateTimeHelperTestObject.DateTime_ParseLocal;
+var
+  d1,original: TDateTime;
+begin
+  original := UnixToDateTime(31363200); //12/30/1970
+  Assert.AreEqual(original, d1.ParseLocal('12/30/1970','en-US'));
+end;
+
+procedure TDateTimeHelperTestObject.DateTime_ParseLocal2;
+var
+  d1,original: TDateTime;
+begin
+  original := UnixToDateTime(31363200); //12/30/1970
+  Assert.AreEqual(original, d1.ParseLocal('30/12/1970','en-GB'));
+end;
+
+
 
 initialization
   TDUnitX.RegisterTestFixture(TDateTimeHelperTestObject);
