@@ -49,21 +49,19 @@ type
     [Test]
     procedure DateTime_EndOfDay;
     [Test]
-    procedure UnixTime_Get;
+    procedure DateTime_Create_Unixtime;
     [Test]
-    procedure UnixTime_Set;
+    procedure DateTime_Create_TotalSecounds;
     [Test]
-    procedure TotalSecouns_Get;
+    procedure DateTime_Create_AsString;
     [Test]
-    procedure TotalSecouns_Set;
+    procedure DateTime_Create_AsLocalString;
     [Test]
-    procedure DateTime_Parse;
+    procedure DateTime_Create_AsLocalString2;
     [Test]
-    procedure DateTime_Parse2;
+    procedure DateTime_TotalSecounds;
     [Test]
-    procedure DateTime_ParseLocal;
-    [Test]
-    procedure DateTime_ParseLocal2;
+    procedure DateTime_UnixTime;
   end;
 
 implementation
@@ -88,37 +86,6 @@ begin
     SEC_VAL, MSEC_VAL);
   FExpected := EncodeDateTime(YEAR_VAL, MONTH_VAL, DAY_VAL, HOUR_VAL, MIN_VAL,
     SEC_VAL, MSEC_VAL);
-end;
-
-procedure TDateTimeHelperTestObject.TotalSecouns_Get;
-begin
-  Assert.AreEqual(SecondsBetween(FExpected, 0), FActual.TotalSecounds);
-end;
-
-procedure TDateTimeHelperTestObject.TotalSecouns_Set;
-var
-  Available, Expected: TDateTime;
-begin
-// FExpected has millis acuracy and can not compare to Available (secounds acuracy)
-  Expected := StrToDate('01/01/2020');
-
-  Available.TotalSecounds := SecondsBetween(Expected, 0);
-  Assert.AreEqual(Expected, Available);
-end;
-
-procedure TDateTimeHelperTestObject.UnixTime_Get;
-begin
-  Assert.AreEqual(DateTimeToUnix(FExpected), FActual.UnixTime);
-end;
-
-procedure TDateTimeHelperTestObject.UnixTime_Set;
-var
-  UnixValue: Int64;
-  Available: TDateTime;
-begin
-  UnixValue := DateTimeToUnix(FExpected);
-  Available.UnixTime := UnixValue;
-  Assert.AreEqual(UnixToDateTime(UnixValue), Available);
 end;
 
 procedure TDateTimeHelperTestObject.DateTime_Create;
@@ -206,42 +173,81 @@ begin
   Assert.AreEqual(EndOfTheDay(FExpected), FActual.EndOfDay);
 end;
 
-procedure TDateTimeHelperTestObject.DateTime_Parse;
+procedure TDateTimeHelperTestObject.DateTime_Create_Unixtime;
 var
-  d1,original: TDateTime;
-
+  FExpected, FActual:TDateTime;
+  Utime:Int64;
 begin
-  original := UnixToDateTime(31363200); //12/30/1970
-
-  Assert.AreEqual(original, d1.Parse('1970-12-30', 'yyyy-MM-dd', '-'));
+  FExpected := EncodeDateTime(YEAR_VAL, MONTH_VAL, DAY_VAL, HOUR_VAL, MIN_VAL,
+    SEC_VAL, 0);
+  Utime:= DateTimeToUnix(FExpected);
+  FActual := TDateTime.CreateUnixTime(Utime);
+  Assert.AreEqual(FExpected, FActual);
 end;
 
-procedure TDateTimeHelperTestObject.DateTime_Parse2;
+procedure TDateTimeHelperTestObject.DateTime_Create_AsString;
 var
-  d1,original: TDateTime;
-
+  FExpected, FActual:TDateTime;
 begin
-  original := UnixToDateTime(31535999); //12/31/1970 23:59:59
-  Assert.AreEqual(original, d1.Parse('1970-12-31 23_59_59', 'yyyy-MM-dd hh_mm_ss', '-','_'));
+  FExpected := EncodeDateTime(YEAR_VAL, MONTH_VAL, DAY_VAL, HOUR_VAL, MIN_VAL,
+    SEC_VAL, 0);
+
+  FActual := TDateTime.Create('02/14/1995 10:25:15','MM/dd/yyyy hh:mm:ss');
+  Assert.AreEqual(FExpected, FActual);
 end;
 
-procedure TDateTimeHelperTestObject.DateTime_ParseLocal;
+procedure TDateTimeHelperTestObject.DateTime_Create_TotalSecounds;
 var
-  d1,original: TDateTime;
+  FExpected, FActual:TDateTime;
+  TotalSecounds:Int64;
 begin
-  original := UnixToDateTime(31363200); //12/30/1970
-  Assert.AreEqual(original, d1.ParseLocal('12/30/1970','en-US'));
+  FExpected := EncodeDateTime(YEAR_VAL, MONTH_VAL, DAY_VAL, HOUR_VAL, MIN_VAL,
+    SEC_VAL, 0);
+  TotalSecounds := SecondsBetween(FExpected, 0);
+
+  FActual := TDateTime.CreateTotalSeconds(TotalSecounds);
+  Assert.AreEqual(FExpected, FActual);
 end;
 
-procedure TDateTimeHelperTestObject.DateTime_ParseLocal2;
+procedure TDateTimeHelperTestObject.DateTime_Create_AsLocalString;
 var
-  d1,original: TDateTime;
+  FExpected, FActual:TDateTime;
 begin
-  original := UnixToDateTime(31363200); //12/30/1970
-  Assert.AreEqual(original, d1.ParseLocal('30/12/1970','en-GB'));
+  FExpected := EncodeDateTime(YEAR_VAL, MONTH_VAL, DAY_VAL, HOUR_VAL, MIN_VAL,
+    SEC_VAL, 0);
+
+  FActual := TDateTime.CreateLocal('02/14/1995 10:25:15','en-US');
+  Assert.AreEqual(FExpected, FActual);
 end;
 
+procedure TDateTimeHelperTestObject.DateTime_Create_AsLocalString2;
+var
+  FExpected, FActual:TDateTime;
+begin
+  FExpected := EncodeDateTime(YEAR_VAL, MONTH_VAL, DAY_VAL, HOUR_VAL, MIN_VAL,
+    SEC_VAL, 0);
 
+  FActual := TDateTime.CreateLocal('14/02/1995 10:25:15','en-GB');
+  Assert.AreEqual(FExpected, FActual);
+end;
+
+procedure TDateTimeHelperTestObject.DateTime_TotalSecounds;
+var
+  Expected, Actual:Int64;
+begin
+  Expected:= SecondsBetween(FExpected, 0);
+  Actual := FActual.TotalSeconds;
+  Assert.AreEqual(Expected, Actual);
+end;
+
+procedure TDateTimeHelperTestObject.DateTime_UnixTime;
+var
+  Expected, Actual:Int64;
+begin
+  Expected:= DateTimeToUnix(FExpected);
+  Actual := FActual.UnixTime;
+  Assert.AreEqual(Expected, Actual);
+end;
 
 initialization
   TDUnitX.RegisterTestFixture(TDateTimeHelperTestObject);

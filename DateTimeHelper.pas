@@ -49,14 +49,25 @@ type
     class function GetTomorrow: TDateTime; static; inline;
     class function GetYesterDay: TDateTime; static; inline;
     function GetUnixTime: Int64;
-    procedure SetUnixTime(const Value: Int64);
     function GetTotalSecounds: Int64;
-    procedure SetTotalSecounds(const Value: Int64);
+    // Parse a string as TDateTime, using a string format ex.('MM/dd/yyyy hh:mm:ss')
+    class function Parse(Date: string; aFormat: string = ''; aDateSeparator:
+      Char = #0; aTimeSeparator: Char = #0): TDateTime; static; inline;
+
+   // Parse a string as TDateTime, using local string ex. ('en-US')
+    class function ParseLocal(Date: string; local: string = ''): TDateTime;
+      static; inline;
   public
     class function Create(const aYear, aMonth, aDay: Word): TDateTime; overload;
       static; inline;
     class function Create(const aYear, aMonth, aDay, aHour, aMinute, aSecond,
       aMillisecond: Word): TDateTime; overload; static; inline;
+    class function Create(Date: string; aFormat: string = ''; aDateSeparator:
+      Char = #0; aTimeSeparator: Char = #0): TDateTime; overload; static; inline;
+    class function CreateLocal(Date: string; local: string = ''): TDateTime;
+      static; inline;
+    class function CreateUnixTime(const Value: Int64): TDateTime; static; inline;
+    class function CreateTotalSeconds(const Value: Int64): TDateTime; static; inline;
     class property Now: TDateTime read GetNow;
     class property Today: TDateTime read GetToday;
     class property Yesterday: TDateTime read GetYesterDay;
@@ -72,6 +83,8 @@ type
     property Minute: Word read GetMinute;
     property Second: Word read GetSecond;
     property Millisecond: Word read GetMillisecond;
+    property UnixTime: Int64 read GetUnixTime;
+    property TotalSeconds: Int64 read GetTotalSecounds;
     function ToString(const aFormatStr: string = ''): string; inline;
     function StartOfYear: TDateTime; inline;
     function EndOfYear: TDateTime; inline;
@@ -121,19 +134,6 @@ type
       Boolean; inline;
     function WithinMilliseconds(const aDateTime: TDateTime; const AMilliseconds:
       Int64): Boolean; inline;
-
-    // Parse a string as TDateTime, using a string format ex.('MM/dd/yyyy hh:mm:ss')
-    function Parse(Date: string; aFormat: string = ''; aDateSeparator: Char = #0;
-      aTimeSeparator: Char = #0):TDateTime; inline;
-
-   // Parse a string as TDateTime, using local string ex. ('en-US')
-    function ParseLocal(Date: string;local:string=''):TDateTime; inline;
-
-    property UnixTime: Int64 read GetUnixTime write SetUnixTime;
-
-    // Total Secounds until initial Date (12/30/1899 12:00 am)
-    property TotalSecounds: Int64 read GetTotalSecounds write SetTotalSecounds;
-
   end;
 
 implementation
@@ -189,6 +189,16 @@ class function TDateTimeHelper.Create(const aYear, aMonth, aDay, aHour, aMinute,
   aSecond, aMillisecond: Word): TDateTime;
 begin
   Result := EncodeDateTime(aYear, aMonth, aDay, aHour, aMinute, aSecond, aMillisecond);
+end;
+
+class function TDateTimeHelper.CreateTotalSeconds(const Value: Int64): TDateTime;
+begin
+  Result := (Value / 86400);
+end;
+
+class function TDateTimeHelper.CreateUnixTime(const Value: Int64): TDateTime;
+begin
+  Result := (Value / 86400) + 25569;
 end;
 
 function TDateTimeHelper.DaysBetween(const aDateTime: TDateTime): Integer;
@@ -362,16 +372,6 @@ begin
   Result := System.DateUtils.SecondsBetween(Self, aDateTime);
 end;
 
-procedure TDateTimeHelper.SetTotalSecounds(const Value: Int64);
-begin
-  self := (Value / 86400);
-end;
-
-procedure TDateTimeHelper.SetUnixTime(const Value: Int64);
-begin
-  self := (Value / 86400) + 25569;
-end;
-
 function TDateTimeHelper.StartOfDay: TDateTime;
 begin
   Result := StartOfTheDay(Self);
@@ -458,8 +458,8 @@ begin
   Result := System.DateUtils.YearsBetween(Self, aDateTime);
 end;
 
-function TDateTimeHelper.Parse(Date: string; aFormat: string = ''; aDateSeparator: Char = #0;
-  aTimeSeparator: Char = #0):TDateTime;
+class function TDateTimeHelper.Parse(Date: string; aFormat: string = '';
+  aDateSeparator: Char = #0; aTimeSeparator: Char = #0): TDateTime;
 var
   fs: TFormatSettings;
   aFormats: TArray<string>;
@@ -470,11 +470,7 @@ begin
   aLength := Length(aFormats);
 
   if aLength = 0 then
-  begin
-    self := StrToDateTime(Date);
-    result:= self;
-    exit;
-  end;
+    exit(StrToDateTime(Date));
 
   GetLocaleFormatSettings(SysLocale.DefaultLCID, fs);
   with fs do
@@ -495,11 +491,10 @@ begin
         ShortTimeFormat := aFormats[1];
     end;
   end;
-  Self := StrToDateTime(Date, fs);
-    result:= self;
+  Result := StrToDateTime(Date, fs);
 end;
 
-function TDateTimeHelper.ParseLocal(Date: string; local: string = ''):TDateTime;
+class function TDateTimeHelper.ParseLocal(Date: string; local: string = ''): TDateTime;
 var
   fs: TFormatSettings;
 begin
@@ -508,8 +503,18 @@ begin
   else
     fs := TFormatSettings.Create(local);
 
-  Self := StrToDateTime(Date, fs);
-  result:= self;
+  Result := StrToDateTime(Date, fs);
+end;
+
+class function TDateTimeHelper.Create(Date, aFormat: string; aDateSeparator,
+  aTimeSeparator: Char): TDateTime;
+begin
+  Result := Parse(Date, aFormat, aDateSeparator, aTimeSeparator);
+end;
+
+class function TDateTimeHelper.CreateLocal(Date, local: string): TDateTime;
+begin
+  Result:= ParseLocal(Date,local);
 end;
 
 end.
